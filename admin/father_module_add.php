@@ -1,26 +1,38 @@
 <?php 
-include_once '../inc/config.php';
-include_once '../inc/mysql.inc.php';
+include_once '../inc/pgsql.inc.php';
 include_once '../inc/tool.inc.php';
-$templete['title']='添加父板塊頁面';
 if(isset($_POST['submit'])){
-	$link = connect();
+// 	$link = connect();
 
-	//驗證填寫欄位
-	$check_flag = 'add'; 
-	include 'inc/check_father_module.inc.php';
+// 	//驗證填寫欄位
+// 	$check_flag = 'add'; 
+// 	include 'inc/check_father_module.inc.php';
 
-	$query = "insert into sfk_father_module(module_name,sort) value('{$_POST['module_name']}','{$_POST['sort']}')";	
-	execute($link,$query);
-	if(mysqli_affected_rows($link)==1){
+  $query = "INSERT INTO sfk_father_module (module_name,sort) VALUES ('{$_POST['module_name']}','{$_POST['sort']}')";
+  // $query1 = "select * from sfk_father_module";
+ $result=pg_query($conn, $query);
+  if  (!$result) {
+    echo "query did not execute";
+  }
+  $rs = pg_fetch_assoc($result);
+  if (!$rs) {
+    echo "no records";
+  }
+  var_dump($result);
+  var_dump($rs);
+// 	$query = "insert into sfk_father_module(module_name,sort) value('{$_POST['module_name']}','{$_POST['sort']}')";	
+// 	execute($link,$query);
+	if(pg_affected_rows($result)==1){
 		skip('father_module.php','添加成功');
 	}else{
 		skip('father_module.php','添加失敗');
 	}
 }
 ?>
-
-<?php include 'inc/header.inc.php' ?>
+<?php
+include_once 'inc/nav.inc.php';
+?>
+<title>admin父板塊添加</title>
 <div  style="border-width:3px;border-style:dashed;border-color:#FFAC55;padding:5px;text-align: center;">添加父板塊</div>
 
 <form action="" method="post">

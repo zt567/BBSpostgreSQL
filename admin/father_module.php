@@ -1,6 +1,6 @@
 <?php
 include_once '../inc/config.php';
-include_once '../inc/mysql.inc.php';
+include_once '../inc/pgsql.inc.php';
 include_once '../inc/tool.inc.php';
 
 $templete['title']='父板塊列表';
